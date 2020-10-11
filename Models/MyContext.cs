@@ -17,24 +17,28 @@ namespace App_1.Models
         public MyContext(DbContextOptions<MyContext> options)
             : base(options)
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AuthorBook>()
-                .HasKey(t => new { t.AuthotId, t.Book });
+                .HasKey(t => new { t.AuthotId, t.BookId });
 
             modelBuilder.Entity<AuthorBook>()
-                .HasOne(sc => sc.Author)
-                .WithMany(s => s.AuthorBooks)
-                .HasForeignKey(sc => sc.AuthotId);
+                .HasOne(ab => ab.Author)
+                .WithMany(a => a.AuthorBooks)
+                .HasForeignKey(ab => ab.AuthotId);
 
             modelBuilder.Entity<AuthorBook>()
-                .HasOne(sc => sc.Book)
-                .WithMany(c => c.AuthorBooks)
-                .HasForeignKey(sc => sc.BookId);
+                .HasOne(ab => ab.Book)
+                .WithMany(b => b.AuthorBooks)
+                .HasForeignKey(ab => ab.BookId);
+
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.Genre)
+                .WithMany(g => g.Books)
+                .HasForeignKey(b => b.GenreId);
         }
     }
 }

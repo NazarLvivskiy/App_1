@@ -27,9 +27,11 @@ namespace App_1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
+            
+            string connection = Configuration.GetConnectionString("Test_1");
             services.AddDbContext<MyContext>(options => options.UseSqlServer(connection));
             services.AddControllers();
+            services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
